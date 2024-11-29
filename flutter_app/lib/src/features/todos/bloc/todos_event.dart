@@ -5,7 +5,7 @@ sealed class TodosEvent {}
 final class FetchAll extends TodosEvent {}
 
 final class TodoCreated extends TodosEvent {
-  final Todo newTodo;
+  final String newTodo;
   TodoCreated(this.newTodo);
 }
 

@@ -20,4 +20,16 @@ class Todo {
       "status": status,
     };
   }
+
+  Todo copyWith({
+    int? id,
+    String? title,
+    bool? status,
+  }) {
+    return Todo(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      status: status ?? this.status,
+    );
+  }
 }
