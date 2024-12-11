@@ -5,7 +5,7 @@ class Todo {
 
   Todo({required this.id, required this.title, required this.status});
 
-  Todo fromJson(Map<String, dynamic> json) {
+  factory Todo.fromJson(Map<String, dynamic> json) {
     return Todo(
       id: json["id"] as int,
       title: json["title"] as String,

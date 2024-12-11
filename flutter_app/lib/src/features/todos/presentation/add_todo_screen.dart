@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/src/features/todos/bloc/todos_bloc.dart';
+import 'package:todo_app/src/features/todos/application/bloc/todos_bloc.dart';
 
 class AddTodoScreen extends StatefulWidget {
   const AddTodoScreen({super.key});
@@ -36,16 +36,22 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                   ),
                 ),
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      context
-                          .read<TodosBloc>()
-                          .add(TodoCreated(_titleController.value.text));
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: const Text("Create Todo")),
+              BlocConsumer<TodosBloc, TodosState>(
+                listener: (context, state) {
+                  Navigator.of(context).pop();
+                },
+                builder: (context, state) {
+                  return ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          context
+                              .read<TodosBloc>()
+                              .add(TodoCreated(_titleController.value.text));
+                        }
+                      },
+                      child: const Text("Create Todo"));
+                },
+              ),
             ],
           ),
         ),

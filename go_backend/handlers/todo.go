@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -46,6 +47,7 @@ func (h *TodoHandler) GetTodoById(c *gin.Context) {
 func (h *TodoHandler) CreateTodo(c *gin.Context) {
 	var todo types.Todo
 	if err := c.ShouldBindJSON(&todo); err != nil {
+		fmt.Println(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

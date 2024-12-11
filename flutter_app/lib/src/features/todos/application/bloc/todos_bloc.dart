@@ -1,25 +1,40 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/src/models/models.dart';
+
+import '../../domain/todo.dart';
+import '../todo_service.dart';
 
 part 'todos_event.dart';
 part 'todos_state.dart';
 
 class TodosBloc extends Bloc<TodosEvent, TodosState> {
   final TodoService service;
-  TodosBloc(this.service)
-      : super(TodosState(
-            todos: [Todo(id: 1, title: "Demo Todo", status: false)])) {
+  TodosBloc(this.service) : super(TodosState(todos: [])) {
     on<FetchAll>(_fetchAllTodos);
     on<TodoCreated>(_todoCreated);
     on<TodoUpdated>(_todoUpdated);
     on<TodoDeleted>(_todoDeleted);
+
+    add(FetchAll());
   }
 
-  void _fetchAllTodos(FetchAll event, Emitter<TodosState> emit) {}
-  void _todoCreated(TodoCreated event, Emitter<TodosState> emit) {
-    final newTodo =
-        Todo(id: state.todos.length + 1, title: event.newTodo, status: false);
-    emit(state.copyWith([...state.todos, newTodo]));
+  Future<void> _fetchAllTodos(FetchAll event, Emitter<TodosState> emit) async {
+    try {
+      final todos = await service.fetchAllTodos();
+      emit(TodosState(todos: todos));
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> _todoCreated(TodoCreated event, Emitter<TodosState> emit) async {
+    try {
+      final newTodo = await service.createTodo(
+        title: event.newTodo,
+      );
+      emit(state.copyWith([...state.todos, newTodo]));
+    } catch (e) {
+      print(e);
+    }
   }
 
   void _todoUpdated(TodoUpdated event, Emitter<TodosState> emit) {

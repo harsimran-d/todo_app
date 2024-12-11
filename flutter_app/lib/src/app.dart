@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'features/todos/todos_list_screen.dart';
+import 'features/todos/presentation/todos_list_screen.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
