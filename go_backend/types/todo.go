@@ -1,15 +1,19 @@
 package types
 
+import "time"
+
 type Todo struct {
-	Id     int    `json:"id"`
-	Title  string `json:"title"`
-	Status bool   `json:"status"`
+	ID        uint      `json:"id"`
+	Title     string    `json:"title"`
+	Status    bool      `json:"status"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 type TodoService interface {
 	GetAllTodos() ([]Todo, error)
-	GetTodoById(id int) (Todo, error)
-	CreateTodo(todo Todo) (Todo, error)
-	UpdateTodoById(id int, todo Todo) (Todo, error)
-	DeleteTodoById(id int) error
+	GetTodoById(id uint) (Todo, error)
+	CreateTodo(title string) (Todo, error)
+	UpdateTodoById(todo Todo) (Todo, error)
+	DeleteTodoById(id uint) error
 }
