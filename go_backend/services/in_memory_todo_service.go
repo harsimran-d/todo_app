@@ -8,14 +8,14 @@ import (
 )
 
 type InMemoryTodoService struct {
-	todos     map[int]types.Todo
-	idCounter int
+	todos     map[uint]types.Todo
+	idCounter uint
 	mutex     sync.Mutex
 }
 
 func NewInMemoryTodoService() *InMemoryTodoService {
 	return &InMemoryTodoService{
-		todos:     make(map[int]types.Todo),
+		todos:     make(map[uint]types.Todo),
 		idCounter: 1,
 	}
 }
@@ -31,7 +31,7 @@ func (s *InMemoryTodoService) GetAllTodos() ([]types.Todo, error) {
 	return todos, nil
 }
 
-func (s *InMemoryTodoService) GetTodoById(id int) (types.Todo, error) {
+func (s *InMemoryTodoService) GetTodoById(id uint) (types.Todo, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -46,13 +46,13 @@ func (s *InMemoryTodoService) CreateTodo(todo types.Todo) (types.Todo, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	todo.Id = s.idCounter
-	s.todos[todo.Id] = todo
+	todo.ID = s.idCounter
+	s.todos[todo.ID] = todo
 	s.idCounter++
 	return todo, nil
 }
 
-func (s *InMemoryTodoService) UpdateTodoById(id int, todo types.Todo) (types.Todo, error) {
+func (s *InMemoryTodoService) UpdateTodoById(id uint, todo types.Todo) (types.Todo, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -65,7 +65,7 @@ func (s *InMemoryTodoService) UpdateTodoById(id int, todo types.Todo) (types.Tod
 	return todo, nil
 }
 
-func (s *InMemoryTodoService) DeleteTodoById(id int) error {
+func (s *InMemoryTodoService) DeleteTodoById(id uint) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 

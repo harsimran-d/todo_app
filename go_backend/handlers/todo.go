@@ -36,7 +36,7 @@ func (h *TodoHandler) GetTodoById(c *gin.Context) {
 		return
 	}
 
-	todo, err := h.Service.GetTodoById(id)
+	todo, err := h.Service.GetTodoById(uint(id))
 
 	if err != nil {
 		c.JSON(http.StatusNotFound, err.Error())
@@ -51,7 +51,7 @@ func (h *TodoHandler) CreateTodo(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	createdTodo, err := h.Service.CreateTodo(todo)
+	createdTodo, err := h.Service.CreateTodo(todo.Title)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -73,8 +73,8 @@ func (h *TodoHandler) UpdateTodoById(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	todo.Id = id
-	updatedItem, err := h.Service.UpdateTodoById(id, todo)
+	todo.ID = uint(id)
+	updatedItem, err := h.Service.UpdateTodoById(todo)
 
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
@@ -89,7 +89,7 @@ func (h *TodoHandler) DeleteTodoById(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "not a valid id"})
 		return
 	}
-	err = h.Service.DeleteTodoById(id)
+	err = h.Service.DeleteTodoById(uint(id))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
 		return
