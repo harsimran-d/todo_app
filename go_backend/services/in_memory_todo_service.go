@@ -42,26 +42,27 @@ func (s *InMemoryTodoService) GetTodoById(id uint) (types.Todo, error) {
 	return todo, nil
 }
 
-func (s *InMemoryTodoService) CreateTodo(todo types.Todo) (types.Todo, error) {
+func (s *InMemoryTodoService) CreateTodo(title string) (types.Todo, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
-
+	var todo types.Todo
 	todo.ID = s.idCounter
+	todo.Title = title
 	s.todos[todo.ID] = todo
 	s.idCounter++
 	return todo, nil
 }
 
-func (s *InMemoryTodoService) UpdateTodoById(id uint, todo types.Todo) (types.Todo, error) {
+func (s *InMemoryTodoService) UpdateTodoById(todo types.Todo) (types.Todo, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	_, exists := s.todos[id]
+	_, exists := s.todos[todo.ID]
 	if !exists {
 		return types.Todo{}, errors.New("todo not found")
 	}
 
-	s.todos[id] = todo
+	s.todos[todo.ID] = todo
 	return todo, nil
 }
 
